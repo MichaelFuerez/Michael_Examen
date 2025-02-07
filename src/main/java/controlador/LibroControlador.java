@@ -37,30 +37,26 @@ public class LibroControlador {
 
     public ArrayList<LibroModelo> buscarLibrosPorCedula(String cedula) {
     ArrayList<LibroModelo> listaLibros = new ArrayList<>();
+
     try {
-        // Nombre corregido del procedimiento almacenado
-        String sql = "CALL sp_BuscarLibrosCedula(?);";  // Usar el nombre correcto del SP
+        String sql = "CALL sp_BuscarLibrosCedula(?);";  // Procedimiento que trae nombre de autor
         ejecutar = conectado.prepareCall(sql);
         ejecutar.setString(1, cedula);  // Pasamos la cédula como parámetro
         res = ejecutar.executeQuery();
 
         while (res.next()) {
             LibroModelo libro = new LibroModelo();
-            libro.setIdLibro(res.getInt("idLibro"));
-            libro.setIdAutor(res.getInt("idAutor"));
-            libro.setNombreLibros(res.getString("nombreLibros"));
-            listaLibros.add(libro);
+            libro.setIdLibro(res.getInt("idLibro"));  // Obtener idLibro
+            libro.setIdAutor(res.getInt("idAutor"));  // Obtener idAutor
+            libro.setNombreLibros(res.getString("nombreLibros"));  // Obtener nombre del libro
+            libro.setNombreAutores(res.getString("nombreAutores"));  // Obtener nombre del autor
+            listaLibros.add(libro);  // Añadir el libro a la lista
         }
+        ejecutar.close();
     } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error al buscar libros: " + e.getMessage());
-    } finally {
-        try {
-            if (res != null) res.close();
-            if (ejecutar != null) ejecutar.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al cerrar recursos: " + e.getMessage());
-        }
+        System.out.println("Error al buscar libros: " + e.getMessage());
     }
+
     return listaLibros;
 }
 

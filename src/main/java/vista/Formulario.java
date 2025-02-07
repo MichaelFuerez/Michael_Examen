@@ -114,7 +114,7 @@ public class Formulario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
- String cedula = txtCedula.getText().trim();
+  String cedula = txtCedula.getText().trim();
 
     // Validar que la cédula no esté vacía
     if (cedula.isEmpty()) {
@@ -139,7 +139,7 @@ public class Formulario extends javax.swing.JFrame {
 
         // Agregar los libros encontrados a la tabla
         for (LibroModelo libro : libros) {
-            model.addRow(new Object[]{libro.getIdLibro(), libro.getIdAutor(), libro.getNombreLibros()});  // Añadir nombre del libro
+            model.addRow(new Object[]{libro.getIdLibro(), libro.getIdAutor(), libro.getNombreLibros(), libro.getNombreAutores()});  // Agregar nombre del autor
         }
 
     } catch (Exception e) {
