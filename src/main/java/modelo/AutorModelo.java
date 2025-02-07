@@ -1,25 +1,19 @@
 package modelo;
 
-/**
- *
- * @author HP
- */
 public class AutorModelo {
 
     private int idAutor;
     private String cedula;
+    private String nombreAutores;  // Nuevo campo para el nombre del autor
 
-    // Constructor con parámetros
-    public AutorModelo(int idAutor, String cedula) {
+    public AutorModelo(int idAutor, String cedula, String nombreAutores) {
         this.idAutor = idAutor;
         this.cedula = cedula;
+        this.nombreAutores = nombreAutores;
     }
 
-    // Constructor vacío
-    public AutorModelo() {
-    }
+    public AutorModelo() {}
 
-    // Métodos getter y setter
     public int getIdAutor() {
         return idAutor;
     }
@@ -36,11 +30,16 @@ public class AutorModelo {
         this.cedula = cedula;
     }
 
-    // Método toString para mostrar los detalles del autor
+    public String getNombreAutores() {
+        return nombreAutores;
+    }
+
+    public void setNombreAutores(String nombreAutores) {
+        this.nombreAutores = nombreAutores;
+    }
+
     @Override
     public String toString() {
-        return "DATOS AUTOR\n"
-                + "idAutor: " + idAutor + "\n"
-                + "Cédula: " + cedula + "\n";
+        return "Autor [idAutor=" + idAutor + ", cedula=" + cedula + ", nombreAutor=" + nombreAutores + "]";
     }
 }

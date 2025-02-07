@@ -4,16 +4,16 @@ public class LibroModelo {
 
     private int idLibro;
     private int idAutor;
+    private String nombreLibros;  // Nuevo campo para el nombre del libro
 
-    // Constructor con parámetros
-    public LibroModelo(int idLibro, int idAutor) {
+    // Constructor de la clase LibroModelo
+    public LibroModelo(int idLibro, int idAutor, String nombreLibros) {
         this.idLibro = idLibro;
         this.idAutor = idAutor;
+        this.nombreLibros = nombreLibros;
     }
 
-    // Constructor vacío
-    public LibroModelo() {
-    }
+    public LibroModelo() {}
 
     public int getIdLibro() {
         return idLibro;
@@ -31,10 +31,16 @@ public class LibroModelo {
         this.idAutor = idAutor;
     }
 
+    public String getNombreLibros() {
+        return nombreLibros;
+    }
+
+    public void setNombreLibros(String nombreLibros) {
+        this.nombreLibros = nombreLibros;
+    }
+
     @Override
     public String toString() {
-        return "DATOS LIBRO\n"
-                + "ID Libro: " + idLibro + "\n"
-                + "ID Autor: " + idAutor + "\n";
+        return "Libro [idLibro=" + idLibro + ", idAutor=" + idAutor + ", nombreLibro=" + nombreLibros + "]";
     }
 }

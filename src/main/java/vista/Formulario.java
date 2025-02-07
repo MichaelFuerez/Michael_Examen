@@ -45,17 +45,17 @@ public class Formulario extends javax.swing.JFrame {
         jTable1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 255, 255)));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Id Libro", "Id Autor"
+                "Id Libro", "Id Autor", "Title 3", "Title 4"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -139,7 +139,7 @@ public class Formulario extends javax.swing.JFrame {
 
         // Agregar los libros encontrados a la tabla
         for (LibroModelo libro : libros) {
-            model.addRow(new Object[]{libro.getIdLibro(), libro.getIdAutor()});
+            model.addRow(new Object[]{libro.getIdLibro(), libro.getIdAutor(), libro.getNombreLibros()});  // Añadir nombre del libro
         }
 
     } catch (Exception e) {

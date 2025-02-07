@@ -19,10 +19,11 @@ public class AutorControlador {
     // Método para insertar un autor
     public void insertarAutor(AutorModelo autor) {
         try {
-            String sentenciaSQL = "CALL sp_insertar_Autores(?, ?)";
+            String sentenciaSQL = "CALL sp_insertar_Autores(?, ?, ?)";  // Se agrega el campo nombreAutores
             ejecutar = conectado.prepareCall(sentenciaSQL);
             ejecutar.setInt(1, autor.getIdAutor());
             ejecutar.setString(2, autor.getCedula());
+            ejecutar.setString(3, autor.getNombreAutores());  // Añadido el parámetro para el nombre del autor
             
             int res = ejecutar.executeUpdate();
             if (res > 0) {
@@ -41,10 +42,11 @@ public class AutorControlador {
     public boolean actualizarAutor(AutorModelo autor) {
         boolean exito = false;
         try {
-            String sentenciaSQL = "UPDATE autores SET cedula = ? WHERE idAutor = ?";
+            String sentenciaSQL = "UPDATE autores SET cedula = ?, nombreAutores = ? WHERE idAutor = ?"; // Se actualiza también el nombre del autor
             ejecutar = conectado.prepareStatement(sentenciaSQL);
             ejecutar.setString(1, autor.getCedula());
-            ejecutar.setInt(2, autor.getIdAutor());
+            ejecutar.setString(2, autor.getNombreAutores());  // Se agrega la actualización del nombre del autor
+            ejecutar.setInt(3, autor.getIdAutor());
             
             int res = ejecutar.executeUpdate();
             if (res > 0) {
@@ -71,9 +73,10 @@ public class AutorControlador {
             resultado = ejecutar.executeQuery();
 
             while (resultado.next()) {
-                Object[] fila = new Object[2];
+                Object[] fila = new Object[3];  // Se actualiza para manejar los tres campos
                 fila[0] = resultado.getInt("idAutor");
                 fila[1] = resultado.getString("cedula");
+                fila[2] = resultado.getString("nombreAutores");  // Se añade el nombre del autor
                 listaAutores.add(fila);
             }
         } catch (SQLException e) {
