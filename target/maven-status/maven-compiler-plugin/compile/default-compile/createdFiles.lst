@@ -1,0 +1,6 @@
+modelo\AutorModelo.class
+controlador\ConexionBDD.class
+modelo\LibroModelo.class
+controlador\AutorControlador.class
+controlador\LibroControlador.class
+controlador\Main.class
