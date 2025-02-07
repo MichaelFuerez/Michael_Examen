@@ -10,86 +10,87 @@ import modelo.LibroModelo;
 
 public class LibroControlador {
 
-    private LibroModelo libro;
-    ConexionBDD conectar = new ConexionBDD();
-    Connection conectado = (Connection) conectar.conectar();
+    ConexionBDD conectar = new ConexionBDD(); // No es necesario importar si está en el mismo paquete
+    Connection conectado = conectar.conectar(); // Establecer la conexión
     PreparedStatement ejecutar;
     ResultSet res;
 
     public void insertarLibro(LibroModelo libro) {
         try {
-            String sentenciaSQL = "call sp_InsertarLibro('" + libro.getIdLibro() + "', '" + libro.getIdAutor() + "');";
-            ejecutar = conectado.prepareCall(sentenciaSQL);
-            int resu = ejecutar.executeUpdate();
-            if (resu > 0) {
-                JOptionPane.showMessageDialog(null,"Libro Creado con éxito");
-                ejecutar.close();
-            } else {
-                JOptionPane.showMessageDialog(null,"El Libro no ha sido creado, revise que los datos ingresados sean correctos");
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null,"Comuniquese con el Administrador para solicitar ayuda");
-        }
-    }
+            String sql = "CALL sp_InsertarLibro(?, ?);";
+            ejecutar = conectado.prepareCall(sql);
+            ejecutar.setInt(1, libro.getIdLibro());
+            ejecutar.setInt(2, libro.getIdAutor());
 
-    public ArrayList<Object[]> buscarLibro(String idLibro) {
-        ArrayList<Object[]> listaLibros = new ArrayList<>();
-        try {
-            String sql = "call sp_BuscarLibro('%" + idLibro + "%');";
-            ejecutar = (PreparedStatement) conectado.prepareCall(sql);
-            res = ejecutar.executeQuery();
-            int cont = 1;
-            while (res.next()) {
-                Object[] obLibro = new Object[3];
-                obLibro[0] = cont;
-                obLibro[1] = res.getObject("idLibro");
-                obLibro[2] = res.getObject("idAutor");
-                listaLibros.add(obLibro);
-                cont++;
+            int resultado = ejecutar.executeUpdate();
+            if (resultado > 0) {
+                JOptionPane.showMessageDialog(null, "Libro creado con éxito.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al crear el libro. Verifique los datos.");
             }
             ejecutar.close();
-            return listaLibros;
         } catch (SQLException e) {
-            System.out.println("ERROR SQL" + e);
+            JOptionPane.showMessageDialog(null, "Error SQL al insertar libro: " + e.getMessage());
         }
-        return null;
     }
 
-    
+    public ArrayList<LibroModelo> buscarLibrosPorCedula(String cedula) {
+        ArrayList<LibroModelo> listaLibros = new ArrayList<>();
+
+        try {
+            String sql = "CALL sp_BuscarLibrosPorCedula(?);";  // Llamada al procedimiento almacenado
+            ejecutar = conectado.prepareCall(sql);
+            ejecutar.setString(1, cedula);  // Pasamos la cédula como parámetro
+            res = ejecutar.executeQuery();
+
+            while (res.next()) {
+                LibroModelo libro = new LibroModelo();
+                libro.setIdLibro(res.getInt("idLibro"));  // Obtener el idLibro de la consulta
+                libro.setIdAutor(res.getInt("idAutor"));  // Obtener el idAutor de la consulta
+                listaLibros.add(libro);  // Añadir el libro a la lista
+            }
+            ejecutar.close();
+        } catch (SQLException e) {
+            System.out.println("Error al buscar libros: " + e.getMessage());
+        }
+
+        return listaLibros;
+    }
+
     public void actualizarLibro(LibroModelo libro) {
         try {
-            String sentenciaSQL = "call sp_ActualizarLibro('" + libro.getIdLibro() + "', '" + libro.getIdAutor() + "');";
-            ejecutar = (PreparedStatement) conectado.prepareCall(sentenciaSQL);
+            String sql = "CALL sp_ActualizarLibro(?, ?);";
+            ejecutar = conectado.prepareCall(sql);
+            ejecutar.setInt(1, libro.getIdLibro());
+            ejecutar.setInt(2, libro.getIdAutor());
+
             int resultado = ejecutar.executeUpdate();
             if (resultado > 0) {
-                JOptionPane.showMessageDialog(null, "Libro Actualizado con Éxito");
-                ejecutar.close();
+                JOptionPane.showMessageDialog(null, "Libro actualizado con éxito.");
             } else {
-                JOptionPane.showMessageDialog(null, "Revise los datos ingresados");
+                JOptionPane.showMessageDialog(null, "Error al actualizar el libro.");
             }
+            ejecutar.close();
         } catch (SQLException e) {
-            System.out.println("ERROR SQL");
+            System.out.println("Error SQL al actualizar libro: " + e.getMessage());
         }
     }
 
-    public void eliminarLibro(String idLibro) {
+    public void eliminarLibro(int idLibro) {
         try {
-            String sql = "call sp_EliminarLibro('" + idLibro + "');";
-            ejecutar = (PreparedStatement) conectado.prepareCall(sql);
+            String sql = "CALL sp_EliminarLibro(?);";
+            ejecutar = conectado.prepareCall(sql);
+            ejecutar.setInt(1, idLibro);
+
             int resultado = ejecutar.executeUpdate();
             if (resultado > 0) {
-                JOptionPane.showMessageDialog(null, "Libro Eliminado con éxito");
-                ejecutar.close();
+                JOptionPane.showMessageDialog(null, "Libro eliminado con éxito.");
             } else {
-                JOptionPane.showMessageDialog(null, "Revise los datos ingresados");
+                JOptionPane.showMessageDialog(null, "Error al eliminar el libro.");
             }
+            ejecutar.close();
         } catch (SQLException e) {
-            System.out.println("ERROR SQL" + e);
+            System.out.println("Error SQL al eliminar libro: " + e.getMessage());
         }
-    }
-
-    
-    public ArrayList<LibroModelo> buscarLibrosPorCedula(String cedula) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

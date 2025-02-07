@@ -10,18 +10,19 @@ import modelo.AutorModelo;
 
 public class AutorControlador {
 
-    private AutorModelo a;
-    ConexionBDD conectar = new ConexionBDD();
-    Connection conectado = (Connection) conectar.conectar();
-    PreparedStatement ejecutar;
-    ResultSet resultado;
+    private AutorModelo autor;
+    private ConexionBDD conectar = new ConexionBDD();
+    private Connection conectado = conectar.conectar();
+    private PreparedStatement ejecutar;
+    private ResultSet resultado;
 
-    public void insertarAutor(AutorModelo a) {
+    // Método para insertar un autor
+    public void insertarAutor(AutorModelo autor) {
         try {
             String sentenciaSQL = "CALL sp_insertar_Autores(?, ?)";
             ejecutar = conectado.prepareCall(sentenciaSQL);
-            ejecutar.setInt(1, a.getIdAutor());
-            ejecutar.setString(2, a.getCedula());
+            ejecutar.setInt(1, autor.getIdAutor());
+            ejecutar.setString(2, autor.getCedula());
             
             int res = ejecutar.executeUpdate();
             if (res > 0) {
@@ -36,13 +37,14 @@ public class AutorControlador {
         }
     }
 
-    public boolean actualizarAutor(AutorModelo a) {
+    // Método para actualizar la información de un autor
+    public boolean actualizarAutor(AutorModelo autor) {
         boolean exito = false;
         try {
             String sentenciaSQL = "UPDATE autores SET cedula = ? WHERE idAutor = ?";
             ejecutar = conectado.prepareStatement(sentenciaSQL);
-            ejecutar.setString(1, a.getCedula());
-            ejecutar.setInt(2, a.getIdAutor());
+            ejecutar.setString(1, autor.getCedula());
+            ejecutar.setInt(2, autor.getIdAutor());
             
             int res = ejecutar.executeUpdate();
             if (res > 0) {
@@ -59,6 +61,7 @@ public class AutorControlador {
         return exito;
     }
 
+    // Método para buscar autores por cédula
     public ArrayList<Object[]> buscarAutor(String cedula) {
         ArrayList<Object[]> listaAutores = new ArrayList<>();
         try {
@@ -87,6 +90,7 @@ public class AutorControlador {
         return listaAutores;
     }
 
+    // Método para eliminar un autor por su ID
     public void eliminarAutor(int idAutor) {
         try {
             String sentenciaSQL = "DELETE FROM autores WHERE idAutor = ?";

@@ -1,17 +1,18 @@
 package modelo;
 
-/**
- *
- * @author HP
- */
-public class LibroModelo extends AutorModelo {
+public class LibroModelo {
 
     private int idLibro;
+    private int idAutor;
 
-    // Constructor de la clase LibroModelo
-    public LibroModelo(int idLibro, int idAutor, String cedula) {
-        super(idAutor, cedula);  // Llama al constructor de AutorModelo
+    // Constructor con parámetros
+    public LibroModelo(int idLibro, int idAutor) {
         this.idLibro = idLibro;
+        this.idAutor = idAutor;
+    }
+
+    // Constructor vacío
+    public LibroModelo() {
     }
 
     public int getIdLibro() {
@@ -22,18 +23,18 @@ public class LibroModelo extends AutorModelo {
         this.idLibro = idLibro;
     }
 
+    public int getIdAutor() {
+        return idAutor;
+    }
+
+    public void setIdAutor(int idAutor) {
+        this.idAutor = idAutor;
+    }
+
     @Override
     public String toString() {
         return "DATOS LIBRO\n"
-                + "idLibro: " + idLibro + "\n"
-                + super.toString(); 
-    }
-
-    public String getTitulo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public String getGenero() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+                + "ID Libro: " + idLibro + "\n"
+                + "ID Autor: " + idAutor + "\n";
     }
 }
