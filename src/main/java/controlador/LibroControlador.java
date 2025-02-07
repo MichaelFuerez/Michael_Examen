@@ -55,6 +55,7 @@ public class LibroControlador {
         return null;
     }
 
+    
     public void actualizarLibro(LibroModelo libro) {
         try {
             String sentenciaSQL = "call sp_ActualizarLibro('" + libro.getIdLibro() + "', '" + libro.getIdAutor() + "');";
@@ -85,5 +86,10 @@ public class LibroControlador {
         } catch (SQLException e) {
             System.out.println("ERROR SQL" + e);
         }
+    }
+
+    
+    public ArrayList<LibroModelo> buscarLibrosPorCedula(String cedula) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
